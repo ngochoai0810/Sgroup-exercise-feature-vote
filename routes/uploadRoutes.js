@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../uploadConfig");
-const authMiddleware = require("../middleware/authMiddleware");
+const {authMiddleware} = require("../middleware/authMiddleware");
 
 router.post("/uploadfile",authMiddleware, upload.single("file"), (req, res, next) => {
   const file = req.file;

@@ -7,18 +7,18 @@ const multer = require("multer");
 const { getOne, updateOne } = require("../extra");
 
 const register = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password} = req.body;
 
   const [existingUser] = await pool
     .promise()
-    .query("SELECT 1 FROM userz WHERE username = ?", [username]);
+    .query("SELECT 1 FROM users WHERE username = ?", [username]);
   if (existingUser.length > 0) {
     return res.status(400).send("Username đã tồn tại");
   }
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const query = "INSERT INTO userz (username, password) VALUES (?, ?)";
+    const query = "INSERT INTO users (username, password) VALUES (?, ?)";
     pool.query(query, [username, hashedPassword], (err, results) => {
       if (err) {
         return res.status(500).send(err);
@@ -35,28 +35,30 @@ const login = async (req, res) => {
   try {
     const [rows] = await pool
       .promise()
-      .query("SELECT * FROM userz WHERE username = ?", [username]);
+      .query("SELECT * FROM users WHERE username = ?", [username]);
 
     if (rows.length === 0) {
       return res.status(404).send("Không tìm thấy tài khoản");
     }
+    const users = rows[0];
     const hashedPassword = rows[0].password;
     const comparePass = await bcrypt.compare(password, hashedPassword);
 
     if (comparePass) {
-      const token = jwt.sign({ username: username }, "derd");
+      const token = jwt.sign({ id: users.id, username: users.username, role: users.role }, "derd");
       return res.status(200).send(token);
     } else {
       return res.status(400).send("Sai mật khẩu rồi");
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).send(error);
   }
 };
 
 const getUsers = async (req, res) => {
   try {
-    const [users] = await pool.promise().query("SELECT username FROM userz");
+    const [users] = await pool.promise().query("SELECT username FROM users");
     return res.status(200).json(users);
   } catch (error) {
     return res.status(500).send("Lỗi server");

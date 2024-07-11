@@ -8,7 +8,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const coded = jwt.verify(token, "derd");
-    req.user = coded;
+    req.users = coded;
     next();
   } catch {
     return res.status(401).send("token kh hợp lệ");
@@ -16,10 +16,10 @@ const authMiddleware = (req, res, next) => {
 };
 
 const authorAdmin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
+  if (req.users && req.users.role === "admin") {
     next();
   } else {
-    res.status(403).send("bạn kh có quyền truy cập");
+    res.status(403).send("Bạn không có quyền truy cập");
   }
 };
 

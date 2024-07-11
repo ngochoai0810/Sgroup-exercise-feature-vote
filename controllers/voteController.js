@@ -56,7 +56,7 @@ const readPollbyid = async (req, res) => {
       res.status(500).send("kh đọc được");
   }
 };
-    const createPoll= async (req, res) => {
+const createPoll= async (req, res) => {
       const { title, userid } = req.body;
       const create_date = new Date().toISOString().slice(0, 10); 
     
@@ -151,15 +151,15 @@ const createOption = async (req, res)=> {
     }
 }
 const voting = async (req, res) => {
-  const { userid, pollid } = req.body;
+  const { userid, optionid } = req.body;
 
-  if (!userid || !pollid) {
-      return res.status(400).send("Thiếu userid hoặc pollid");
+  if (!userid || !optionid) {
+      return res.status(400).send("Thiếu userid hoặc optionid");
   }
 
   try {
-      const query = 'INSERT INTO vote (userid, pollid) VALUE (?, ?)';
-      await pool.promise().query(query, [userid, pollid]);
+      const query = 'INSERT INTO vote (userid, optionid) VALUE (?, ?)';
+      await pool.promise().query(query, [userid, optionid]);
       res.status(201).send("Đã vote thành công");
   } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
@@ -170,17 +170,17 @@ const voting = async (req, res) => {
   }
 };
 const unvoting = async (req, res) => {
-  const { userid, pollid } = req.body;
+  const { userid, optionid } = req.body;
 
-  if (!userid || !pollid) {
-      return res.status(400).send("Thiếu userid hoặc pollid");
+  if (!userid || !optionid) {
+      return res.status(400).send("Thiếu userid hoặc optionid");
   }
 
   try {
-      const query = 'DELETE FROM vote WHERE userid = ? AND pollid = ?';
-      const [result] = await pool.promise().query(query, [userid, pollid]);
+      const query = 'DELETE FROM vote WHERE userid = ? AND optionid = ?';
+      const [result] = await pool.promise().query(query, [userid, optionid]);
 
-      if (result.affectedRows === 0) {
+      if (result.length === 0) {
           return res.status(404).send("Vote không tồn tại");
       }
 
