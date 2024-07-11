@@ -10,11 +10,20 @@ const authMiddleware = (req, res, next) => {
     const coded = jwt.verify(token, "derd");
     req.user = coded;
     next();
-  } catch (error) {
-    return res.status(401).send("Token không hợp lệ");
+  } catch {
+    return res.status(401).send("token kh hợp lệ");
   }
 };
 
+const authorAdmin = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    res.status(403).send("bạn kh có quyền truy cập");
+  }
+};
 
-module.exports = authMiddleware;
-//xác thực token JWT trước khi cho phép truy cập vào các API yêu cầu xác thựcc
+module.exports = {
+  authMiddleware,
+  authorAdmin,
+};
