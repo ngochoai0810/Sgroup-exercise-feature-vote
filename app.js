@@ -6,6 +6,6 @@ app.use(express.json());
 const authRoutes = require("./routes/authRoutes");
 app.use("", authRoutes);
 app.listen(PORT, () => {
-  console.log(`Máy chủ đang chạy trên cổng ${PORT}`);
-  console.log(`Máy chủ đang chạy tại http://localhost:${PORT}`);
+  
+  console.log(`Server is running at: http://localhost:${PORT}`);
 });

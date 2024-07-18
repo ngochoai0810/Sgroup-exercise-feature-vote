@@ -16,10 +16,10 @@ const authMiddleware = (req, res, next) => {
 };
 
 const authorAdmin = (req, res, next) => {
-  if (req.users && req.users.role === "admin") {
+  if ( req.users.role === "admin") {
     next();
   } else {
-    res.status(403).send("Bạn không có quyền truy cập");
+    res.status(403).send("Vous n’avez pas accès");
   }
 };
 

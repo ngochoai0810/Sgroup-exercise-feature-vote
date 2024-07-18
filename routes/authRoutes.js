@@ -30,9 +30,9 @@ router.delete(
   voteController.deletePoll
 );
 router.get("/options", voteController.getOption);
-router.get("/options/:id", voteController.getOptionbyid);
+router.get("/options/:pollid", voteController.getOptionbyid);
 router.post("/option", voteController.createOption);
-router.post("/vote", voteController.voting);
-router.delete("/vote", voteController.unvoting);
+router.post("/vote/:pollid", voteController.voting);
+router.delete("/vote/:pollid", voteController.unvoting);
 
 module.exports = router;
