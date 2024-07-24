@@ -1,5 +1,5 @@
 const { pool } = require("../db");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const mailService = require("../db").mailler;
 const crypto = require("crypto");
