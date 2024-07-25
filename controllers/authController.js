@@ -1,5 +1,5 @@
 const { pool } = require("../db");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const mailService = require("../db").mailler;
 const crypto = require("crypto");
@@ -51,7 +51,7 @@ const login = async (req, res) => {
       return res.status(400).send("Sai mật khẩu rồi");
     }
   } catch (error) {
-    console.log(error);
+    console.error("Đã xảy ra lỗi khi xử lý đăng nhập:", error);
     return res.status(500).send(error);
   }
 };
