@@ -6,7 +6,7 @@ const {
   authorAdmin,
 } = require("../middleware/authMiddleware");
 const voteController = require("../controllers/voteController");
-
+router.get("/",authController.Helloworld)
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.get("/userz", authMiddleware, authController.getUsers);

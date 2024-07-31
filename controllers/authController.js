@@ -1,4 +1,5 @@
 const { pool } = require("../db");
+
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const mailService = require("../db").mailler;
@@ -7,7 +8,7 @@ const multer = require("multer");
 const { getOne, updateOne } = require("../extra");
 
 const register = async (req, res) => {
-  const { username, password} = req.body;
+  const { username, password } = req.body;
 
   const [existingUser] = await pool
     .promise()
@@ -45,7 +46,10 @@ const login = async (req, res) => {
     const comparePass = await bcrypt.compare(password, hashedPassword);
 
     if (comparePass) {
-      const token = jwt.sign({ id: users.id, username: users.username, role: users.role }, "derd");
+      const token = jwt.sign(
+        { id: users.id, username: users.username, role: users.role },
+        "derd"
+      );
       return res.status(200).send(token);
     } else {
       return res.status(400).send("Sai mật khẩu rồi");
@@ -55,7 +59,9 @@ const login = async (req, res) => {
     return res.status(500).send(error);
   }
 };
-
+const Helloworld = async (req, res) => {
+  res.send("Hello World");
+};
 const getUsers = async (req, res) => {
   try {
     const [users] = await pool.promise().query("SELECT username FROM users");
@@ -167,4 +173,5 @@ module.exports = {
   getUsers,
   sendMail,
   resetPassword,
+  Helloworld
 };
