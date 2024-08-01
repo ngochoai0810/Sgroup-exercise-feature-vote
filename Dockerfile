@@ -12,5 +12,8 @@ COPY . .
 EXPOSE 3000
 
 CMD ["npm", "start", "test"]
+<<<<<<< HEAD
 
+=======
+>>>>>>> 00d3115 (Update Dockerfile)
 
