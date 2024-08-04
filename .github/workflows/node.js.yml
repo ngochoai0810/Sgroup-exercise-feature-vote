@@ -67,4 +67,4 @@ jobs:
             sudo docker rm vote-app-container
 
             # Chạy container mới với image đã pull về bên trên
-            sudo docker run -d -p 3000:3000 --name vote-app-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            sudo docker run -d -p 3000:3000 --env-file /home/ubuntu/.env --name vote-app-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
