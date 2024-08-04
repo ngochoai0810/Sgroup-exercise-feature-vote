@@ -1,19 +1,33 @@
-
-version: '3.8'
-
+version: "3.8"
 
 services:
-  app:
-    container_name: my-app
-    image: my-image   
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./be.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+
+  vote-app:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: vote-app-container
     ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
 
-
-      - "8081:3000"
-    volumes:
-      - .:/app
-    command: npm start
-
+volumes:
+  mysql-data:
