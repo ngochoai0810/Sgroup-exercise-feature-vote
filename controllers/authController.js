@@ -1,7 +1,6 @@
 const { pool } = require("../db");
 
-const bcrypt = require('bcryptjs');
-
+const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 const mailService = require("../db").mailler;
@@ -62,7 +61,7 @@ const login = async (req, res) => {
   }
 };
 const Helloworld = async (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World ngoc hoai");
 };
 const getUsers = async (req, res) => {
   try {
@@ -175,5 +174,5 @@ module.exports = {
   getUsers,
   sendMail,
   resetPassword,
-  Helloworld
+  Helloworld,
 };
