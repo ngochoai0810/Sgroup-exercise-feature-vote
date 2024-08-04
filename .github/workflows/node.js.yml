@@ -31,7 +31,6 @@ jobs:
         run: |
           docker build -t vote-app-image .
           docker run -p 3000:3000 -d --name vote-app-container vote-app-image
-
       - name: Wait for 10 second for server to run
         run: sleep 10
 
@@ -59,11 +58,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           debug: true
           script: |
-            # Source environment variables if needed
-            source /home/ubuntu/.env
-
-            # Stop remove current containers
-            sudo docker-compose rm -fsv 
-
-            # Run compose up
-            sudo docker-compose up -d -e DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            # Pull image mà được push lên DockerHub bên trên
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            # Dừng và gỡ bỏ container hiện tại (nếu có)
+            sudo docker stop vote-app-container
+            sudo docker rm vote-app-container
+            # Chạy container mới với image đã pull về bên trên
+            sudo docker run -d -p 3000:3000 --env-file /home/ubuntu/.env --name vote-app-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
