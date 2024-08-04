@@ -8,6 +8,10 @@ const crypto = require("crypto");
 const multer = require("multer");
 const { getOne, updateOne } = require("../extra");
 
+const Helloworld = async (req, res) => {
+  res.send("Hello World mentor");
+};
+
 const register = async (req, res) => {
   const { username, password } = req.body;
 
@@ -60,9 +64,7 @@ const login = async (req, res) => {
     return res.status(500).send(error);
   }
 };
-const Helloworld = async (req, res) => {
-  res.send("Hello World ngoc hoai");
-};
+
 const getUsers = async (req, res) => {
   try {
     const [users] = await pool.promise().query("SELECT username FROM users");
