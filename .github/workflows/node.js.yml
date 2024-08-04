@@ -52,6 +52,8 @@ jobs:
     steps:
       - name: Deploy to server
         # Sử dụng action "appleboy/ssh-action" để triển khai image lên server thông qua SSH
+        env:
+          DOCKERHUB_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
         uses: appleboy/ssh-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -60,11 +62,5 @@ jobs:
           debug: true
           script: |
             # Pull image mà được push lên DockerHub bên trên
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
-
-            # Dừng và gỡ bỏ container hiện tại (nếu có)
-            sudo docker stop vote-app-container
-            sudo docker rm vote-app-container
-
-            # Chạy container mới với image đã pull về bên trên
-            sudo docker run -d -p 3000:3000 --env-file /home/ubuntu/.env --name vote-app-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            source /home/ubuntu/.env
+            sudo docker-compose up -d
