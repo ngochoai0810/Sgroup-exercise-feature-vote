@@ -69,9 +69,12 @@ jobs:
 
             # Export the Docker Hub image
             export DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            sleep 10
 
             # Print the value of DOCKERHUB_IMAGE for debugging
             echo $DOCKERHUB_IMAGE
+
+
 
             sudo docker-compose rm -fsv 
             sudo docker-compose up -d
