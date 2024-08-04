@@ -9,7 +9,6 @@ on:
 
 # Định nghĩa các jobs cần thực hiện
 jobs:
- 
   # Job thực thi trên máy ảo ubuntu
   build_and_test:
     runs-on: ubuntu-latest
@@ -63,8 +62,8 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
 
             # Dừng và gỡ bỏ container hiện tại (nếu có)
-            docker stop reactjs-container
-            docker rm reactjs-container
+            docker stop vote-app-container
+            docker rm vote-app-container
 
             # Chạy container mới với image đã pull về bên trên
-            docker run -d -p 80:3000 --name reactjs-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            docker run -d -p 3000:3000 --name vote-app-container ${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
