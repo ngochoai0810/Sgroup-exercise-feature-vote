@@ -74,4 +74,4 @@ jobs:
             echo $DOCKERHUB_IMAGE
 
             sudo docker-compose rm -fsv 
-            sudo docker-compose up -d
+            sudo docker-compose up -d -e DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
