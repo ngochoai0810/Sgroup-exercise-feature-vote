@@ -62,16 +62,16 @@ jobs:
           debug: true
           script: |
             # Pull image mà được push lên DockerHub bên trên
-            echo "DOCKERHUB_IMAGE=${DOCKERHUB_IMAGE}"
-            
+            echo $DOCKERHUB_IMAGE
+
             # Source environment variables if needed
             source /home/ubuntu/.env
-            
+
             # Export the Docker Hub image
-            export DOCKERHUB_IMAGE=${DOCKERHUB_IMAGE}
+            export DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
 
             # Print the value of DOCKERHUB_IMAGE for debugging
-            echo "DOCKERHUB_IMAGE=${DOCKERHUB_IMAGE}"
-            
+            echo $DOCKERHUB_IMAGE
+
             sudo docker-compose rm -fsv 
             sudo docker-compose up -d
