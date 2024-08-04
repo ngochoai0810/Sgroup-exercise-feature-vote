@@ -63,5 +63,6 @@ jobs:
           script: |
             # Pull image mà được push lên DockerHub bên trên
             source /home/ubuntu/.env
-            export DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}
+            export DOCKERHUB_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/vote-app-image:${{ github.sha }}"
+            sudo docker-compose rm -fsv 
             sudo docker-compose up -d
